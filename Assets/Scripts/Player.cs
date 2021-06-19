@@ -1,5 +1,4 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -22,7 +21,6 @@ public class Player : MonoBehaviour
             movePlayerXY(-1);
         if (Input.GetKeyDown(KeyCode.Space))
             playerJump();
-        Debug.Log("is player touching ground?" + playerIsTouchingGround);
     }
 
     public void movePlayerXY(int direction)
