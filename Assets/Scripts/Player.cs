@@ -15,16 +15,20 @@ public class Player : MonoBehaviour
     private bool playerIsTouchingGround;
     private int playerHasJumped = 0;
     public GameController gameController;
+    public Animator animator;
 
 
     void Update()
     {
 
-
-        if (Input.GetKey("d"))
-            movePlayerXY(1);
         if (Input.GetKey("a"))
             movePlayerXY(-1);
+        if (Input.GetKey("d"))
+            movePlayerXY(1);
+
+        if (!Input.GetKey("a") && !Input.GetKey("d"))
+            animator.SetFloat("Speed", 0);
+
         if (Input.GetKeyDown(KeyCode.Space))
             playerJump();
 
@@ -36,7 +40,6 @@ public class Player : MonoBehaviour
     private void showPlayerPOS()
     {
         Coord pos = getPlayerPosition();
-        Debug.Log(pos.x);
     }
     Coord getPlayerPosition()
     {
@@ -49,7 +52,19 @@ public class Player : MonoBehaviour
 
     public void movePlayerXY(int direction)
     {
+        animator.SetFloat("Speed", 1);
         transform.position += new Vector3(direction * Time.deltaTime * playerSpeed, 0, 0);
+        rotatePlayer(direction);
+    }
+
+    private void rotatePlayer(int direction)
+
+    {
+        Debug.Log(direction);
+        if (direction == 1)
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+        if (direction == -1)
+            transform.rotation = Quaternion.Euler(0, 180, 0);
     }
 
     public void playerJump()
@@ -58,14 +73,25 @@ public class Player : MonoBehaviour
         {
             rigidbody = GetComponent<Rigidbody2D>();
             rigidbody.AddForce(Vector2.up * jumpHeight, ForceMode2D.Impulse);
+            animator.SetBool("IsJumping", true);
+            if (playerHasJumped == 1)
+                playerSpin();
+
             playerHasJumped += 1;
         }
+    }
+
+    private void playerSpin()
+    {
+
+        transform.Rotate(0, 0, 5 * Time.deltaTime, Space.World);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         playerIsTouchingGround = true;
         playerHasJumped = 0;
+        animator.SetBool("IsJumping", false);
     }
 
     void OnCollisionExit2D(Collision2D collision)
