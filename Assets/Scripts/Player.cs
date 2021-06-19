@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     private new Rigidbody2D rigidbody;
     private bool playerIsTouchingGround;
     private int playerHasJumped = 0;
+    public GameController gameController;
 
     void Update()
     {
@@ -21,6 +22,8 @@ public class Player : MonoBehaviour
             movePlayerXY(-1);
         if (Input.GetKeyDown(KeyCode.Space))
             playerJump();
+
+        playerReset();
     }
 
     public void movePlayerXY(int direction)
@@ -47,5 +50,12 @@ public class Player : MonoBehaviour
     void OnCollisionExit2D(Collision2D collision)
     {
         playerIsTouchingGround = false;
+    }
+
+    private void playerReset()
+    {
+
+        if (gameObject.transform.position.y < 0)
+            gameController.resetCurrentLevel();
     }
 }
