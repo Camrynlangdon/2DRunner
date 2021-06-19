@@ -10,35 +10,35 @@ public class Player : MonoBehaviour
     [SerializeField]
     int jumpHeight;
 
+
+    public GameController gameController;
+    public Animator animator;
     public Coord playPosition;
+
     private new Rigidbody2D rigidbody;
     private bool playerIsTouchingGround;
     private int playerHasJumped = 0;
-    public GameController gameController;
 
 
-    void Update()
+    private void Update()
     {
 
-
-        if (Input.GetKey("d"))
-            movePlayerXY(1);
         if (Input.GetKey("a"))
             movePlayerXY(-1);
+        if (Input.GetKey("d"))
+            movePlayerXY(1);
+
+        if (!Input.GetKey("a") && !Input.GetKey("d"))
+            animator.SetFloat("Speed", 0);
+
         if (Input.GetKeyDown(KeyCode.Space))
             playerJump();
 
         playerReset();
-
-        showPlayerPOS();
     }
 
-    private void showPlayerPOS()
-    {
-        Coord pos = getPlayerPosition();
-        Debug.Log(pos.x);
-    }
-    Coord getPlayerPosition()
+
+    public Coord getPlayerPosition()
     {
         Vector2 currentplayerPosition = gameObject.transform.position;
         float x = currentplayerPosition.x;
@@ -47,17 +47,30 @@ public class Player : MonoBehaviour
         return new Coord(x, y);
     }
 
-    public void movePlayerXY(int direction)
+    private void movePlayerXY(int direction)
     {
+        animator.SetFloat("Speed", 1);
         transform.position += new Vector3(direction * Time.deltaTime * playerSpeed, 0, 0);
+        rotatePlayer(direction);
     }
 
-    public void playerJump()
+    private void rotatePlayer(int direction)
+
+    {
+        Debug.Log(direction);
+        if (direction == 1)
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+        if (direction == -1)
+            transform.rotation = Quaternion.Euler(0, 180, 0);
+    }
+
+    private void playerJump()
     {
         if (playerHasJumped <= 1)
         {
             rigidbody = GetComponent<Rigidbody2D>();
             rigidbody.AddForce(Vector2.up * jumpHeight, ForceMode2D.Impulse);
+            animator.SetBool("IsJumping", true);
             playerHasJumped += 1;
         }
     }
@@ -66,9 +79,10 @@ public class Player : MonoBehaviour
     {
         playerIsTouchingGround = true;
         playerHasJumped = 0;
+        animator.SetBool("IsJumping", false);
     }
 
-    void OnCollisionExit2D(Collision2D collision)
+    private void OnCollisionExit2D(Collision2D collision)
     {
         playerIsTouchingGround = false;
     }
