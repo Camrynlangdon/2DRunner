@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -9,13 +10,17 @@ public class Player : MonoBehaviour
     [SerializeField]
     int jumpHeight;
 
+    public Coord playPosition;
     private new Rigidbody2D rigidbody;
     private bool playerIsTouchingGround;
     private int playerHasJumped = 0;
     public GameController gameController;
 
+
     void Update()
     {
+
+
         if (Input.GetKey("d"))
             movePlayerXY(1);
         if (Input.GetKey("a"))
@@ -24,6 +29,22 @@ public class Player : MonoBehaviour
             playerJump();
 
         playerReset();
+
+        showPlayerPOS();
+    }
+
+    private void showPlayerPOS()
+    {
+        Coord pos = getPlayerPosition();
+        Debug.Log(pos.x);
+    }
+    Coord getPlayerPosition()
+    {
+        Vector2 currentplayerPosition = gameObject.transform.position;
+        float x = currentplayerPosition.x;
+        float y = currentplayerPosition.y;
+        this.playPosition = new Coord(x, y);
+        return new Coord(x, y);
     }
 
     public void movePlayerXY(int direction)
