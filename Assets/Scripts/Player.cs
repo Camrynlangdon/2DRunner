@@ -10,15 +10,17 @@ public class Player : MonoBehaviour
     [SerializeField]
     int jumpHeight;
 
+
+    public GameController gameController;
+    public Animator animator;
     public Coord playPosition;
+
     private new Rigidbody2D rigidbody;
     private bool playerIsTouchingGround;
     private int playerHasJumped = 0;
-    public GameController gameController;
-    public Animator animator;
 
 
-    void Update()
+    private void Update()
     {
 
         if (Input.GetKey("a"))
@@ -33,15 +35,10 @@ public class Player : MonoBehaviour
             playerJump();
 
         playerReset();
-
-        showPlayerPOS();
     }
 
-    private void showPlayerPOS()
-    {
-        Coord pos = getPlayerPosition();
-    }
-    Coord getPlayerPosition()
+
+    public Coord getPlayerPosition()
     {
         Vector2 currentplayerPosition = gameObject.transform.position;
         float x = currentplayerPosition.x;
@@ -50,7 +47,7 @@ public class Player : MonoBehaviour
         return new Coord(x, y);
     }
 
-    public void movePlayerXY(int direction)
+    private void movePlayerXY(int direction)
     {
         animator.SetFloat("Speed", 1);
         transform.position += new Vector3(direction * Time.deltaTime * playerSpeed, 0, 0);
@@ -67,24 +64,15 @@ public class Player : MonoBehaviour
             transform.rotation = Quaternion.Euler(0, 180, 0);
     }
 
-    public void playerJump()
+    private void playerJump()
     {
         if (playerHasJumped <= 1)
         {
             rigidbody = GetComponent<Rigidbody2D>();
             rigidbody.AddForce(Vector2.up * jumpHeight, ForceMode2D.Impulse);
             animator.SetBool("IsJumping", true);
-            if (playerHasJumped == 1)
-                playerSpin();
-
             playerHasJumped += 1;
         }
-    }
-
-    private void playerSpin()
-    {
-
-        transform.Rotate(0, 0, 5 * Time.deltaTime, Space.World);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -94,7 +82,7 @@ public class Player : MonoBehaviour
         animator.SetBool("IsJumping", false);
     }
 
-    void OnCollisionExit2D(Collision2D collision)
+    private void OnCollisionExit2D(Collision2D collision)
     {
         playerIsTouchingGround = false;
     }
