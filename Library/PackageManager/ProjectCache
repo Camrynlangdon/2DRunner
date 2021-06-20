@@ -5,16 +5,16 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 637595976394767182
-    m_Hash: 1338107236
+      ticks: 637598065999309281
+    m_Hash: 823571092
   m_LockFileStatus:
     m_FilePath: C:/Users/Camryn/git/2DRunner/Packages/packages-lock.json
     m_PathExists: 1
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 637595976735716391
-    m_Hash: 479716047
+      ticks: 637598065999309281
+    m_Hash: 1865576060
 m_EmbeddedPackageManifests:
   m_ManifestsStatus: {}
 m_LocalPackages:
