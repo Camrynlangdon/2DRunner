@@ -341,6 +341,7 @@
 "Assets/Scripts/Coord.cs"
 "Assets/Scripts/GameController.cs"
 "Assets/Scripts/Player.cs"
+"Assets/Scripts/testScript.cs"
 -langversion:8.0
 
 /deterministic
