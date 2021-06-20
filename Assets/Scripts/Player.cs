@@ -8,20 +8,20 @@ public class Player : MonoBehaviour
     int playerSpeed;
 
     [SerializeField]
-    int jumpHeight;
+    int jumpStrength;
 
 
     public GameController gameController;
     public Animator animator;
     public Coord playPosition;
     public CameraController cameraController;
-    public bool hasLanded = false; 
+    public bool hasLanded = false;
 
 
     private new Rigidbody2D rigidbody;
     private bool playerIsTouchingGround;
     private int playerHasJumped = 0;
-    
+
 
 
     private void Update()
@@ -40,7 +40,7 @@ public class Player : MonoBehaviour
 
         playerReset();
 
-        cameraController.changeCameraPosition(getPlayerPosition(), hasLanded); 
+        cameraController.changeCameraPosition(getPlayerPosition(), hasLanded);
     }
 
 
@@ -76,7 +76,7 @@ public class Player : MonoBehaviour
         if (playerHasJumped <= 1)
         {
             rigidbody = GetComponent<Rigidbody2D>();
-            rigidbody.AddForce(Vector2.up * jumpHeight, ForceMode2D.Impulse);
+            rigidbody.AddForce(Vector2.up * jumpStrength, ForceMode2D.Impulse);
             animator.SetBool("IsJumping", true);
             playerHasJumped += 1;
         }
@@ -87,7 +87,7 @@ public class Player : MonoBehaviour
         playerIsTouchingGround = true;
         playerHasJumped = 0;
         animator.SetBool("IsJumping", false);
-        hasLanded = true; 
+        hasLanded = true;
     }
 
     private void OnCollisionExit2D(Collision2D collision)
@@ -102,5 +102,5 @@ public class Player : MonoBehaviour
             gameController.resetCurrentLevel();
     }
 
-   
+
 }
