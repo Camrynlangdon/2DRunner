@@ -14,10 +14,14 @@ public class Player : MonoBehaviour
     public GameController gameController;
     public Animator animator;
     public Coord playPosition;
+    public CameraController cameraController;
+    public bool hasLanded = false; 
+
 
     private new Rigidbody2D rigidbody;
     private bool playerIsTouchingGround;
     private int playerHasJumped = 0;
+    
 
 
     private void Update()
@@ -35,6 +39,8 @@ public class Player : MonoBehaviour
             playerJump();
 
         playerReset();
+
+        cameraController.changeCameraPosition(getPlayerPosition(), hasLanded); 
     }
 
 
@@ -49,6 +55,7 @@ public class Player : MonoBehaviour
 
     private void movePlayerXY(int direction)
     {
+        if (!hasLanded) return;
         animator.SetFloat("Speed", 1);
         transform.position += new Vector3(direction * Time.deltaTime * playerSpeed, 0, 0);
         rotatePlayer(direction);
@@ -80,6 +87,7 @@ public class Player : MonoBehaviour
         playerIsTouchingGround = true;
         playerHasJumped = 0;
         animator.SetBool("IsJumping", false);
+        hasLanded = true; 
     }
 
     private void OnCollisionExit2D(Collision2D collision)
@@ -93,4 +101,6 @@ public class Player : MonoBehaviour
         if (gameObject.transform.position.y < 0)
             gameController.resetCurrentLevel();
     }
+
+   
 }
