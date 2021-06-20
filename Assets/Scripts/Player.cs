@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
     public Coord playPosition;
     public CameraController cameraController;
     public bool hasLanded = false;
-
+    
 
     private new Rigidbody2D rigidbody;
     private bool playerIsTouchingGround;
@@ -118,6 +118,7 @@ public class Player : MonoBehaviour
         float healthMultiplyer = change / 100;
         float healthModifier = maxPlayerHealth * healthMultiplyer;
         playerHealth = playerHealth - healthModifier;
+
     }
 
 }
