@@ -10,7 +10,10 @@ public class Player : MonoBehaviour
     [SerializeField]
     int jumpStrength;
 
+    [SerializeField]
+    float maxPlayerHealth;
 
+    public float playerHealth;
     public GameController gameController;
     public Animator animator;
     public Coord playPosition;
@@ -22,7 +25,10 @@ public class Player : MonoBehaviour
     private bool playerIsTouchingGround;
     private int playerHasJumped = 0;
 
-
+    private void Start()
+    {
+        playerHealth = maxPlayerHealth; 
+    }
 
     private void Update()
     {
@@ -44,6 +50,11 @@ public class Player : MonoBehaviour
     }
 
 
+    private void FixedUpdate()
+    {
+        if(playerHealth <= 0) gameController.resetCurrentLevel();
+    }
+
     public Coord getPlayerPosition()
     {
         Vector2 currentplayerPosition = gameObject.transform.position;
@@ -64,7 +75,7 @@ public class Player : MonoBehaviour
     private void rotatePlayer(int direction)
 
     {
-        Debug.Log(direction);
+       
         if (direction == 1)
             transform.rotation = Quaternion.Euler(0, 0, 0);
         if (direction == -1)
@@ -102,5 +113,11 @@ public class Player : MonoBehaviour
             gameController.resetCurrentLevel();
     }
 
+    public void ChangeHealth(float change)
+    {
+        float healthMultiplyer = change / 100;
+        float healthModifier = maxPlayerHealth * healthMultiplyer;
+        playerHealth = playerHealth - healthModifier;
+    }
 
 }

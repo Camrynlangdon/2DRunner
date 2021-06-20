@@ -339,8 +339,10 @@
 -r:"Library/Bee/artifacts/1900b0aE.dag/VSSettingsProvider.ref.dll"
 "Assets/Scripts/CameraController.cs"
 "Assets/Scripts/Coord.cs"
+"Assets/Scripts/Enemy.cs"
 "Assets/Scripts/GameController.cs"
 "Assets/Scripts/Player.cs"
+"Assets/Scripts/testScript.cs"
 -langversion:8.0
 
 /deterministic
