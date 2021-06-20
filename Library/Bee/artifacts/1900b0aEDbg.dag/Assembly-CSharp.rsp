@@ -337,6 +337,7 @@
 -r:"Library/Bee/artifacts/1900b0aEDbg.dag/UnityEditor.UI.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aEDbg.dag/UnityEngine.UI.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aEDbg.dag/VSSettingsProvider.ref.dll"
+"Assets/Scripts/CameraController.cs"
 "Assets/Scripts/Coord.cs"
 "Assets/Scripts/GameController.cs"
 "Assets/Scripts/Player.cs"
