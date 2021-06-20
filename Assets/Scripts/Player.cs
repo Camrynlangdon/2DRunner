@@ -118,7 +118,16 @@ public class Player : MonoBehaviour
         float healthMultiplyer = change / 100;
         float healthModifier = maxPlayerHealth * healthMultiplyer;
         playerHealth = playerHealth - healthModifier;
+        ChangeHealthBar();
+
 
     }
+
+    private void ChangeHealthBar()
+    {
+        GameObject healthbar = transform.Find("healthBar").gameObject;
+        float newBarXScale = playerHealth / maxPlayerHealth; 
+        healthbar.transform.localScale = new Vector2(newBarXScale, 1f);
+     }
 
 }
