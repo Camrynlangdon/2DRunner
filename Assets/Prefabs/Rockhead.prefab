@@ -131,7 +131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c170c7e8fdda7ce40ad8553e28a1ef79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  meleeDamage: 5
+  meleeDamage: 40
   player: {fileID: 0}
 --- !u!61 &2372995823276159957
 BoxCollider2D:
@@ -146,7 +146,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.000000029802322, y: -0.00032103062}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -157,7 +157,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.31, y: 0.31}
+  m_Size: {x: 0.30220222, y: 0.30156034}
   m_EdgeRadius: 0
 --- !u!61 &2372995823276159956
 BoxCollider2D:
@@ -172,7 +172,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.00032487512, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -183,7 +183,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.31, y: 0.31}
+  m_Size: {x: 0.30155253, y: 0.30090278}
   m_EdgeRadius: 0
 --- !u!95 &2372995823276159954
 Animator:
@@ -328,8 +328,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   positionToMoveTo: {x: 0, y: -3.5}
-  timeToMove: 0.6
+  delayedStart: 1
+  timeToMove: 1
   resetObjectAfterAnimation: 1
   timeAfterAnimationForReset: 3
   resetTimeToMove: 3
+  action: Hit
+  idle: 
+  randomEvent: []
   gameObjectToMove: {fileID: 2372995823276159959}
