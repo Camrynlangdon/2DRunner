@@ -331,5 +331,5 @@ MonoBehaviour:
   timeToMove: 0.6
   resetObjectAfterAnimation: 1
   timeAfterAnimationForReset: 3
-  resetTimeToMove: 0
+  resetTimeToMove: 3
   gameObjectToMove: {fileID: 2372995823276159959}

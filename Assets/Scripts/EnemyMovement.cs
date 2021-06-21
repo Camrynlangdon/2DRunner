@@ -50,7 +50,7 @@ public class EnemyMovement : MonoBehaviour
     private IEnumerator delayedResetObjectPoition(Vector2 targetPosition, float duratuion)
     {
         yield return new WaitForSeconds(duratuion);
-        StartCoroutine(LerpPosition(targetPosition, positionToMoveTo, timeToMove));
+        StartCoroutine(LerpPosition(targetPosition, positionToMoveTo, resetTimeToMove));
 
     }
     private IEnumerator LerpPosition(Vector2 targetPosition, Vector2 startPosition, float duration)
