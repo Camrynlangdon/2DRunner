@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
     public Coord playPosition;
     public CameraController cameraController;
     public bool hasLanded = false;
+    public GameObject healthBar; 
     
 
     private new Rigidbody2D rigidbody;
@@ -125,9 +126,9 @@ public class Player : MonoBehaviour
 
     private void ChangeHealthBar()
     {
-        GameObject healthbar = transform.Find("healthBar").gameObject;
+        
         float newBarXScale = playerHealth / maxPlayerHealth; 
-        healthbar.transform.localScale = new Vector2(newBarXScale, 1f);
+        healthBar.transform.localScale = new Vector2(newBarXScale, 1f);
      }
 
 }
