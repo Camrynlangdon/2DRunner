@@ -150,9 +150,8 @@ public class ItemMovement : MonoBehaviour
     private IEnumerator resetPosition()
     {
         Debug.Log("reset Item");
-        if (resetObjectAfterAnimation && timesMoved == 1)
+        if (resetObjectAfterAnimation && timesMoved == 1 || string.IsNullOrEmpty(action) && timesMoved == 1)
         {
-
             yield return new WaitForSeconds(timeAfterMovementForReset);
             StartCoroutine(LerpPosition(positionToMoveTo, startPosition, resetTimeToMove));
         }
