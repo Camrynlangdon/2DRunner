@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class EnemyMovement : MonoBehaviour
+public class ItemMovement : MonoBehaviour
 {
 
 
@@ -17,6 +17,9 @@ public class EnemyMovement : MonoBehaviour
     float timeToMove;
 
     [SerializeField]
+    bool linearMovement = true;
+
+    [SerializeField]
     bool resetObjectAfterAnimation = false;
 
     [SerializeField]
@@ -24,6 +27,15 @@ public class EnemyMovement : MonoBehaviour
 
     [SerializeField]
     float resetTimeToMove = 0;
+
+    [SerializeField]
+    bool loopAction = false;
+
+    [SerializeField]
+    float timeBetweenLoops = 0;
+
+    [SerializeField]
+    float timeAfterMovementForReset = 0;
 
     [SerializeField]
     string action;
@@ -38,28 +50,23 @@ public class EnemyMovement : MonoBehaviour
     private bool isRunning;
     private int timesMoved;
     private Vector2 startPosition;
+    private bool isPlayerTouching;
 
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!isRunning)
+        isPlayerTouching = true;
+        if (!isRunning && timesMoved == 0)
         {
-
-
-
-            if (timesMoved == 0)
-            {
-                StartCoroutine(LerpPosition(startPosition, positionToMoveTo, timeToMove));
-                startPosition = gameObjectToMove.transform.localPosition;
-
-            }
-
-
-
-
+            StartCoroutine(LerpPosition(startPosition, positionToMoveTo, timeToMove));
+            startPosition = gameObjectToMove.transform.localPosition;
         }
+    }
 
-
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        isPlayerTouching = false;
+        Debug.Log("player not touching object");
     }
 
     private void triggerAnimation(string triggerName)
@@ -103,7 +110,13 @@ public class EnemyMovement : MonoBehaviour
         while (time < duration)
         {
             float t = time / duration;
-            t = t * t * (1f + 10f * t);
+
+
+            if (!linearMovement)
+            {
+                t = t * t * (1f + 10f * t);
+            }
+
 
             gameObjectToMove.transform.localPosition = Vector2.Lerp(startPosition, targetPosition, t);
             time += Time.deltaTime;
@@ -113,19 +126,37 @@ public class EnemyMovement : MonoBehaviour
 
 
         isRunning = false;
-        resetPosition();
+        StartCoroutine(resetPosition());
         if (targetPosition == this.startPosition)
         {
             timesMoved = 0;
+            Debug.Log("object has reset movement!" + "isplayertouching " + isPlayerTouching);
+            StartCoroutine(loopMovement());
             triggerAnimationLoopStop(idle);
+
         }
     }
 
 
-    private void resetPosition()
+    private IEnumerator loopMovement()
     {
+        if (loopAction && isPlayerTouching)
+        {
+            yield return new WaitForSeconds(timeBetweenLoops);
+            StartCoroutine(LerpPosition(startPosition, positionToMoveTo, timeToMove));
+        }
+    }
+
+    private IEnumerator resetPosition()
+    {
+        Debug.Log("reset Item");
         if (resetObjectAfterAnimation && timesMoved == 1)
+        {
+
+            yield return new WaitForSeconds(timeAfterMovementForReset);
             StartCoroutine(LerpPosition(positionToMoveTo, startPosition, resetTimeToMove));
+        }
+
     }
 
 }
