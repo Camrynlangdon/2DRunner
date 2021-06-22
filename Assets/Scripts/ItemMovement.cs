@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class ItemMovement : MonoBehaviour
@@ -55,6 +53,7 @@ public class ItemMovement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        playRandomAnimation();
         isPlayerTouching = true;
         if (!isRunning && timesMoved == 0)
         {
@@ -66,28 +65,46 @@ public class ItemMovement : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         isPlayerTouching = false;
-        Debug.Log("player not touching object");
     }
 
+    private void playRandomAnimation()
+    {
+        if (randomEvent.Length == 0) return;
+        int number = 1;
+        //int randomNum = Random.Range(0, 1);
+        int randomNum = 1;
+        if (randomNum == number)//play animation
+        {
+
+            int randomIndex = Random.Range(0, randomEvent.Length);
+            int randomAnimationTriggerDelay = Random.Range(0, 10);
+            delayedAnimationPlay("Blink", randomAnimationTriggerDelay);
+
+        }
+
+
+    }
     private void triggerAnimation(string triggerName)
     {
-        if (action == null || action == "") return;
+        if (string.IsNullOrEmpty(triggerName)) return;
         Animator animator = gameObjectToMove.GetComponent<Animator>();
         animator.SetTrigger(triggerName);
+
     }
 
     private void triggerAnimationLoopStop(string triggerName)
     {
-
-        if (string.IsNullOrEmpty(idle)) return;
+        if (string.IsNullOrEmpty(triggerName)) return;
         Animator animator = gameObjectToMove.GetComponent<Animator>();
         animator.SetTrigger(triggerName);
     }
 
     private IEnumerator delayedAnimationPlay(string triggerName, float time)
     {
+        Debug.Log("delayedAnimation has been called for " + triggerName + "time =" + time);
         yield return new WaitForSeconds(time);
         triggerAnimation(triggerName);
+        Debug.Log("triggerAnimation " + triggerName + "time =" + time);
     }
 
     private IEnumerator LerpPosition(Vector2 startPosition, Vector2 targetPosition, float duration)
@@ -130,10 +147,10 @@ public class ItemMovement : MonoBehaviour
         if (targetPosition == this.startPosition)
         {
             timesMoved = 0;
-            Debug.Log("object has reset movement!" + "isplayertouching " + isPlayerTouching);
-            StartCoroutine(loopMovement());
-            triggerAnimationLoopStop(idle);
-
+            if (loopAction && isPlayerTouching)
+                StartCoroutine(loopMovement());
+            else
+                triggerAnimationLoopStop(idle);
         }
     }
 
@@ -149,7 +166,6 @@ public class ItemMovement : MonoBehaviour
 
     private IEnumerator resetPosition()
     {
-        Debug.Log("reset Item");
         if (resetObjectAfterAnimation && timesMoved == 1 || string.IsNullOrEmpty(action) && timesMoved == 1)
         {
             yield return new WaitForSeconds(timeAfterMovementForReset);

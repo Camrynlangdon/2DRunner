@@ -56,10 +56,10 @@ TagManager:
   - name: New Layer 5
     uniqueID: 2276164719
     locked: 0
-  - name: New Layer 6
+  - name: Enemy 1
     uniqueID: 3764176107
     locked: 0
-  - name: New Layer 7
+  - name: Enemy 2
     uniqueID: 167150681
     locked: 0
   - name: Player
