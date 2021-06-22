@@ -17,7 +17,7 @@ public class CameraController : MonoBehaviour
         float x = playerPosition.x;
         float y = playerPosition.y;
 
-        cam.transform.position = new Vector3(x, y + 2, -10);
+        cam.transform.position = new Vector3(x, y, -10);
     }
 
 }
