@@ -8,16 +8,16 @@ public class CameraController : MonoBehaviour
 {
     [SerializeField]
     private Camera cam;
-    
+
 
 
     public void changeCameraPosition(Coord playerPosition, bool hasLanded)
     {
-        if (!hasLanded) return; 
+        if (!hasLanded) return;
         float x = playerPosition.x;
         float y = playerPosition.y;
 
-        cam.transform.position = new Vector3(x, y, -1); 
+        cam.transform.position = new Vector3(x, y + 2, -10);
     }
 
 }
