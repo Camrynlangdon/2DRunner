@@ -44,6 +44,7 @@ public class ItemMovement : MonoBehaviour
     [SerializeField]
     string[] randomEvent;
 
+    AnimationController animationController;
     public GameObject gameObjectToMove;
     private bool isRunning;
     private int timesMoved;
@@ -53,7 +54,6 @@ public class ItemMovement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        playRandomAnimation();
         isPlayerTouching = true;
         if (!isRunning && timesMoved == 0)
         {
@@ -67,46 +67,6 @@ public class ItemMovement : MonoBehaviour
         isPlayerTouching = false;
     }
 
-    private void playRandomAnimation()
-    {
-        if (randomEvent.Length == 0) return;
-        int number = 1;
-        //int randomNum = Random.Range(0, 1);
-        int randomNum = 1;
-        if (randomNum == number)//play animation
-        {
-
-            int randomIndex = Random.Range(0, randomEvent.Length);
-            int randomAnimationTriggerDelay = Random.Range(0, 10);
-            delayedAnimationPlay("Blink", randomAnimationTriggerDelay);
-
-        }
-
-
-    }
-    private void triggerAnimation(string triggerName)
-    {
-        if (string.IsNullOrEmpty(triggerName)) return;
-        Animator animator = gameObjectToMove.GetComponent<Animator>();
-        animator.SetTrigger(triggerName);
-
-    }
-
-    private void triggerAnimationLoopStop(string triggerName)
-    {
-        if (string.IsNullOrEmpty(triggerName)) return;
-        Animator animator = gameObjectToMove.GetComponent<Animator>();
-        animator.SetTrigger(triggerName);
-    }
-
-    private IEnumerator delayedAnimationPlay(string triggerName, float time)
-    {
-        Debug.Log("delayedAnimation has been called for " + triggerName + "time =" + time);
-        yield return new WaitForSeconds(time);
-        triggerAnimation(triggerName);
-        Debug.Log("triggerAnimation " + triggerName + "time =" + time);
-    }
-
     private IEnumerator LerpPosition(Vector2 startPosition, Vector2 targetPosition, float duration)
     {
         float time = 0;
@@ -116,13 +76,15 @@ public class ItemMovement : MonoBehaviour
 
         if (timesMoved == 1)
         {
+            AnimationController AnimationControllerClass = gameObject.AddComponent(typeof(AnimationController)) as AnimationController;
+            animationController = AnimationControllerClass;
+            animationController.gameObjectToAnimate = gameObjectToMove;
+            animationController.playRandomAnimation(randomEvent);
             if (!delayedStart)
-                triggerAnimation(action);
+                animationController.triggerAnimation(action);
             else
-                StartCoroutine(delayedAnimationPlay(action, timeToMove * .5f));
+                StartCoroutine(animationController.delayedAnimationPlay(action, timeToMove * .5f));
         }
-
-
 
         while (time < duration)
         {
@@ -133,7 +95,6 @@ public class ItemMovement : MonoBehaviour
             {
                 t = t * t * (1f + 10f * t);
             }
-
 
             gameObjectToMove.transform.localPosition = Vector2.Lerp(startPosition, targetPosition, t);
             time += Time.deltaTime;
@@ -150,18 +111,14 @@ public class ItemMovement : MonoBehaviour
             if (loopAction && isPlayerTouching)
                 StartCoroutine(loopMovement());
             else
-                triggerAnimationLoopStop(idle);
+                animationController.triggerAnimationLoopStop(idle);
         }
     }
 
-
     private IEnumerator loopMovement()
     {
-        if (loopAction && isPlayerTouching)
-        {
-            yield return new WaitForSeconds(timeBetweenLoops);
-            StartCoroutine(LerpPosition(startPosition, positionToMoveTo, timeToMove));
-        }
+        yield return new WaitForSeconds(timeBetweenLoops);
+        StartCoroutine(LerpPosition(startPosition, positionToMoveTo, timeToMove));
     }
 
     private IEnumerator resetPosition()
@@ -171,7 +128,6 @@ public class ItemMovement : MonoBehaviour
             yield return new WaitForSeconds(timeAfterMovementForReset);
             StartCoroutine(LerpPosition(positionToMoveTo, startPosition, resetTimeToMove));
         }
-
     }
 
 }
