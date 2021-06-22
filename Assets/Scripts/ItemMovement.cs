@@ -55,7 +55,6 @@ public class ItemMovement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("player is on object");
         isPlayerTouching = true;
         if (!isRunning && timesMoved == 0)
         {
@@ -127,7 +126,7 @@ public class ItemMovement : MonoBehaviour
 
 
         isRunning = false;
-        resetPosition();
+        StartCoroutine(resetPosition());
         if (targetPosition == this.startPosition)
         {
             timesMoved = 0;
@@ -150,8 +149,10 @@ public class ItemMovement : MonoBehaviour
 
     private IEnumerator resetPosition()
     {
+        Debug.Log("reset Item");
         if (resetObjectAfterAnimation && timesMoved == 1)
         {
+
             yield return new WaitForSeconds(timeAfterMovementForReset);
             StartCoroutine(LerpPosition(positionToMoveTo, startPosition, resetTimeToMove));
         }
