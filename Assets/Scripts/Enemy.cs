@@ -18,8 +18,12 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        isPlayerTouching = true;
-        StartCoroutine(waitForAttack());
+        if (collision.gameObject.tag == player.tag)
+        {
+            Debug.Log("player has colided with enemy!");
+            isPlayerTouching = true;
+            StartCoroutine(waitForAttack());
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
