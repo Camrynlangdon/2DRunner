@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -13,6 +14,15 @@ public class Player : MonoBehaviour
     [SerializeField]
     float maxPlayerHealth;
 
+    [SerializeField]
+    float healthRegenSpeed;
+
+    [SerializeField]
+    float playerHealthRegenDelay;
+
+    [SerializeField]
+    float healthRegenCap = 0;
+
     public float playerHealth;
     public GameController gameController;
     public Animator animator;
@@ -25,10 +35,13 @@ public class Player : MonoBehaviour
     private new Rigidbody2D rigidbody;
     private bool playerIsTouchingGround;
     private int playerHasJumped = 0;
-
+    private bool playerHealthRegenInProgress = false;
+    private float lastTimePlayerWasHurt;
+    private SpriteRenderer healthBarSprite;
     private void Start()
     {
         playerHealth = maxPlayerHealth;
+        healthBarSprite = healthBar.GetComponent<SpriteRenderer>();
     }
 
     private void Update()
@@ -51,6 +64,8 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
+        Debug.Log(playerHealth);
+        StartCoroutine(regenHealth());
         if (playerHealth <= 0) gameController.resetCurrentLevel();
     }
 
@@ -110,19 +125,71 @@ public class Player : MonoBehaviour
             gameController.resetCurrentLevel();
     }
 
+    IEnumerator regenHealth()
+    {
+        if (playerHealth < healthRegenCap && !playerHealthRegenInProgress)
+        {
+            if (Time.time - lastTimePlayerWasHurt > playerHealthRegenDelay)
+            {
+                playerHealthRegenInProgress = true;
+                yield return new WaitForSeconds(healthRegenSpeed);
+                ChangeHealth(1);
+                playerHealthRegenInProgress = false;
+            }
+
+        }
+    }
+
     public void ChangeHealth(float change)
     {
-        float healthMultiplyer = change / 100;
+        float healthMultiplyer = change / 100 * -1;
         float healthModifier = maxPlayerHealth * healthMultiplyer;
-        playerHealth = playerHealth - healthModifier;
+        float newPlayerHealth = playerHealth - healthModifier;
+        if (newPlayerHealth > 100) newPlayerHealth = 100;
+        if (newPlayerHealth < 0) newPlayerHealth = 0;
+
+        playerHealth = newPlayerHealth;
         ChangeHealthBar();
     }
 
     private void ChangeHealthBar()
     {
+        float currentXScale = healthBar.transform.localScale.x;
         float newBarXScale = playerHealth / maxPlayerHealth;
+
+
         healthBar.transform.localScale = new Vector2(newBarXScale, 1f);
-        animator.SetTrigger("PlayerHurt");
+
+        handleHealthBarColor();
+
+        if (newBarXScale < currentXScale)
+        {
+            animator.SetTrigger("PlayerHurt");
+            lastTimePlayerWasHurt = Time.time;
+        }
+
+    }
+
+    private void handleHealthBarColor()
+    {
+
+
+        if (playerHealth <= 30)
+        {
+            healthBarSprite.color = new Color(255, 0, 0, 1);
+            return;
+        }
+        if (playerHealth <= 59)
+        {
+            healthBarSprite.color = new Color(255, 255, 0, 1);
+            return;
+        }
+        if (playerHealth >= 60)
+        {
+            healthBarSprite.color = new Color(0, 255, 0, 1);
+            return;
+        }
+
     }
 
 }
