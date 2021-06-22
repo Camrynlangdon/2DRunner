@@ -66,7 +66,6 @@ public class ItemMovement : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         isPlayerTouching = false;
-        Debug.Log("player not touching object");
     }
 
     private void triggerAnimation(string triggerName)
@@ -130,7 +129,6 @@ public class ItemMovement : MonoBehaviour
         if (targetPosition == this.startPosition)
         {
             timesMoved = 0;
-            Debug.Log("object has reset movement!" + "isplayertouching " + isPlayerTouching);
             StartCoroutine(loopMovement());
             triggerAnimationLoopStop(idle);
 
@@ -149,7 +147,6 @@ public class ItemMovement : MonoBehaviour
 
     private IEnumerator resetPosition()
     {
-        Debug.Log("reset Item");
         if (resetObjectAfterAnimation && timesMoved == 1 || string.IsNullOrEmpty(action) && timesMoved == 1)
         {
             yield return new WaitForSeconds(timeAfterMovementForReset);

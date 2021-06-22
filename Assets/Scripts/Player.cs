@@ -44,6 +44,9 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
             playerJump();
 
+        if (Input.GetKey("r"))
+            gameController.resetCurrentLevel();
+
         playerReset();
         cameraController.changeCameraPosition(getPlayerPosition(), hasLanded);
     }
