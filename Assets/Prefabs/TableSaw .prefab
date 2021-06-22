@@ -368,10 +368,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   positionToMoveTo: {x: -5, y: 0}
   delayedStart: 0
-  timeToMove: 2
+  timeToMove: 1
+  linearMovement: 1
   resetObjectAfterAnimation: 1
   timeAfterAnimationForReset: 0.5
   resetTimeToMove: 2
+  loopAction: 0
   action: Spin
   idle: StopSpin
   randomEvent: []
