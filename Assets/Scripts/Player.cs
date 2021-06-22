@@ -19,8 +19,8 @@ public class Player : MonoBehaviour
     public Coord playPosition;
     public CameraController cameraController;
     public bool hasLanded = false;
-    public GameObject healthBar; 
-    
+    public GameObject healthBar;
+    public Rigidbody2D rigidbody2D;
 
     private new Rigidbody2D rigidbody;
     private bool playerIsTouchingGround;
@@ -28,16 +28,15 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        playerHealth = maxPlayerHealth; 
+        playerHealth = maxPlayerHealth;
     }
 
     private void Update()
     {
-
         if (Input.GetKey("a"))
-            movePlayerXY(-1);
+            movePlayerX(-1);
         if (Input.GetKey("d"))
-            movePlayerXY(1);
+            movePlayerX(1);
 
         if (!Input.GetKey("a") && !Input.GetKey("d"))
             animator.SetFloat("Speed", 0);
@@ -46,14 +45,13 @@ public class Player : MonoBehaviour
             playerJump();
 
         playerReset();
-
         cameraController.changeCameraPosition(getPlayerPosition(), hasLanded);
     }
 
 
     private void FixedUpdate()
     {
-        if(playerHealth <= 0) gameController.resetCurrentLevel();
+        if (playerHealth <= 0) gameController.resetCurrentLevel();
     }
 
     public Coord getPlayerPosition()
@@ -65,18 +63,17 @@ public class Player : MonoBehaviour
         return new Coord(x, y);
     }
 
-    private void movePlayerXY(int direction)
+    private void movePlayerX(int direction)
     {
         if (!hasLanded) return;
         animator.SetFloat("Speed", 1);
-        transform.position += new Vector3(direction * Time.deltaTime * playerSpeed, 0, 0);
+        rigidbody2D.velocity = new Vector2(direction * playerSpeed, rigidbody2D.velocity.y);
         rotatePlayer(direction);
     }
 
     private void rotatePlayer(int direction)
-
     {
-       
+
         if (direction == 1)
             transform.rotation = Quaternion.Euler(0, 0, 0);
         if (direction == -1)
@@ -87,8 +84,7 @@ public class Player : MonoBehaviour
     {
         if (playerHasJumped <= 1)
         {
-            rigidbody = GetComponent<Rigidbody2D>();
-            rigidbody.AddForce(Vector2.up * jumpStrength, ForceMode2D.Impulse);
+            rigidbody2D.velocity = Vector2.up * jumpStrength * 2;
             animator.SetBool("IsJumping", true);
             playerHasJumped += 1;
         }
@@ -120,15 +116,12 @@ public class Player : MonoBehaviour
         float healthModifier = maxPlayerHealth * healthMultiplyer;
         playerHealth = playerHealth - healthModifier;
         ChangeHealthBar();
-
-
     }
 
     private void ChangeHealthBar()
     {
-        
-        float newBarXScale = playerHealth / maxPlayerHealth; 
+        float newBarXScale = playerHealth / maxPlayerHealth;
         healthBar.transform.localScale = new Vector2(newBarXScale, 1f);
-     }
+    }
 
 }
