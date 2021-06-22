@@ -12,7 +12,7 @@ public class Armor : MonoBehaviour
     private bool hasGivinArmor = false;
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (hasGivinArmor) return;
+        if (hasGivinArmor || player.playerArmor == player.maxPlayerArmor) return;
         hasGivinArmor = true;
         Destroy(gameObject);
         player.changeArmor(armorAmount);

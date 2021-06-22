@@ -46,6 +46,7 @@ public class ItemMovement : MonoBehaviour
 
     AnimationController animationController;
     public GameObject gameObjectToMove;
+    public Player player;
     private bool isRunning;
     private int timesMoved;
     private Vector2 startPosition;
@@ -53,6 +54,7 @@ public class ItemMovement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.gameObject.tag != player.tag) return;
         isPlayerTouching = true;
         if (!isRunning && timesMoved == 0)
         {
