@@ -122,6 +122,7 @@ public class Player : MonoBehaviour
     {
         float newBarXScale = playerHealth / maxPlayerHealth;
         healthBar.transform.localScale = new Vector2(newBarXScale, 1f);
+        animator.SetTrigger("PlayerHurt");
     }
 
 }
