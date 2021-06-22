@@ -23,6 +23,10 @@ public class Player : MonoBehaviour
     [SerializeField]
     float healthRegenCap = 0;
 
+    [SerializeField]
+    float maxPlayerArmor;
+
+    public string name = "player";
     public float playerHealth;
     public GameController gameController;
     public Animator animator;
@@ -30,6 +34,7 @@ public class Player : MonoBehaviour
     public CameraController cameraController;
     public bool hasLanded = false;
     public GameObject healthBar;
+    public GameObject armorBar;
     public Rigidbody2D rigidbody2D;
 
     private new Rigidbody2D rigidbody;
@@ -38,6 +43,8 @@ public class Player : MonoBehaviour
     private bool playerHealthRegenInProgress = false;
     private float lastTimePlayerWasHurt;
     private SpriteRenderer healthBarSprite;
+
+    private float playerArmor;
     private void Start()
     {
         playerHealth = maxPlayerHealth;
@@ -64,9 +71,7 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Debug.Log(playerHealth);
         StartCoroutine(regenHealth());
-        if (playerHealth <= 0) gameController.resetCurrentLevel();
     }
 
     public Coord getPlayerPosition()
@@ -88,7 +93,6 @@ public class Player : MonoBehaviour
 
     private void rotatePlayer(int direction)
     {
-
         if (direction == 1)
             transform.rotation = Quaternion.Euler(0, 0, 0);
         if (direction == -1)
@@ -120,7 +124,6 @@ public class Player : MonoBehaviour
 
     private void playerReset()
     {
-
         if (gameObject.transform.position.y < 0)
             gameController.resetCurrentLevel();
     }
@@ -136,20 +139,47 @@ public class Player : MonoBehaviour
                 ChangeHealth(1);
                 playerHealthRegenInProgress = false;
             }
-
         }
     }
 
     public void ChangeHealth(float change)
     {
-        float healthMultiplyer = change / 100 * -1;
-        float healthModifier = maxPlayerHealth * healthMultiplyer;
-        float newPlayerHealth = playerHealth - healthModifier;
-        if (newPlayerHealth > 100) newPlayerHealth = 100;
-        if (newPlayerHealth < 0) newPlayerHealth = 0;
+        if (playerArmor > 0 && change < 0)
+        {
+            changeArmor(change);
+            return;
+        }
+        float newPlayerHealth = playerHealth - maxPlayerHealth * change / 100 * -1;
 
+        if (newPlayerHealth > 100) newPlayerHealth = 100;
+        if (newPlayerHealth < 0)
+        {
+            newPlayerHealth = 0;
+            gameController.resetCurrentLevel();
+        }
         playerHealth = newPlayerHealth;
         ChangeHealthBar();
+    }
+
+    public void changeArmor(float change)
+    {
+        float newPlayerArmor = playerArmor - maxPlayerArmor * change / 100 * -1;
+
+        if (newPlayerArmor > 100) newPlayerArmor = 100;
+        if (newPlayerArmor < 0)
+        {
+            ChangeHealth(playerArmor - change);
+            newPlayerArmor = 0;
+        }
+        playerArmor = newPlayerArmor;
+        changeArmorBar();
+    }
+
+    private void changeArmorBar()
+    {
+        float currentXScale = armorBar.transform.localScale.x;
+        float newBarXScale = playerArmor / maxPlayerArmor;
+        armorBar.transform.localScale = new Vector2(newBarXScale, 1f);
     }
 
     private void ChangeHealthBar()
@@ -157,9 +187,7 @@ public class Player : MonoBehaviour
         float currentXScale = healthBar.transform.localScale.x;
         float newBarXScale = playerHealth / maxPlayerHealth;
 
-
         healthBar.transform.localScale = new Vector2(newBarXScale, 1f);
-
         handleHealthBarColor();
 
         if (newBarXScale < currentXScale)
@@ -167,29 +195,25 @@ public class Player : MonoBehaviour
             animator.SetTrigger("PlayerHurt");
             lastTimePlayerWasHurt = Time.time;
         }
-
     }
 
     private void handleHealthBarColor()
     {
-
-
-        if (playerHealth <= 30)
+        if (playerHealth <= 35)
         {
             healthBarSprite.color = new Color(255, 0, 0, 1);
             return;
         }
-        if (playerHealth <= 59)
+        if (playerHealth <= 79)
         {
             healthBarSprite.color = new Color(255, 255, 0, 1);
             return;
         }
-        if (playerHealth >= 60)
+        if (playerHealth >= 80)
         {
             healthBarSprite.color = new Color(0, 255, 0, 1);
             return;
         }
-
     }
 
 }

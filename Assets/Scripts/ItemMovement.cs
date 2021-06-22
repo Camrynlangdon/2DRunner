@@ -50,6 +50,7 @@ public class ItemMovement : MonoBehaviour
     private int timesMoved;
     private Vector2 startPosition;
     private bool isPlayerTouching;
+    private float playerArmor;
 
 
     private void OnTriggerEnter2D(Collider2D collision)
