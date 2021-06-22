@@ -10,7 +10,6 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     float attackSpeedInSeconds = 0;
 
-
     public Player player;
 
     private bool isPlayerTouching;

@@ -18,4 +18,6 @@ public class Armor : MonoBehaviour
         player.changeArmor(armorAmount);
     }
 
+
+
 }
