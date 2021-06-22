@@ -364,3 +364,4 @@ MonoBehaviour:
   randomEvent:
   - Blink
   gameObjectToMove: {fileID: 2372995823276159959}
+  player: {fileID: 6076808283707100414, guid: 1ab27dd0b5b1bdf4b8f0db31833df417, type: 3}

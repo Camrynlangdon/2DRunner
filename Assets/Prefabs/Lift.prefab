@@ -170,6 +170,7 @@ MonoBehaviour:
   idle: 
   randomEvent: []
   gameObjectToMove: {fileID: 5137755994772450297}
+  player: {fileID: 6076808283707100414, guid: 1ab27dd0b5b1bdf4b8f0db31833df417, type: 3}
 --- !u!1 &5137755995625660912
 GameObject:
   m_ObjectHideFlags: 0

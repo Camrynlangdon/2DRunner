@@ -380,6 +380,7 @@ MonoBehaviour:
   idle: StopSpin
   randomEvent: []
   gameObjectToMove: {fileID: 103851790512131476}
+  player: {fileID: 6076808283707100414, guid: 1ab27dd0b5b1bdf4b8f0db31833df417, type: 3}
 --- !u!1 &103851790178449199
 GameObject:
   m_ObjectHideFlags: 0

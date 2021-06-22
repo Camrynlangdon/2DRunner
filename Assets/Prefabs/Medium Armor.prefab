@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   armorAmount: 50
-  player: {fileID: 0}
+  player: {fileID: 6076808283707100414, guid: 1ab27dd0b5b1bdf4b8f0db31833df417, type: 3}
 --- !u!61 &4047943093505210934
 BoxCollider2D:
   m_ObjectHideFlags: 0
