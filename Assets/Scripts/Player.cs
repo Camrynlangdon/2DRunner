@@ -24,10 +24,10 @@ public class Player : MonoBehaviour
     float healthRegenCap = 0;
 
     [SerializeField]
-    float maxPlayerArmor;
+    public float maxPlayerArmor;
 
-    public string name = "player";
     public float playerHealth;
+    public float playerArmor;
     public GameController gameController;
     public Animator animator;
     public Coord playPosition;
@@ -44,7 +44,6 @@ public class Player : MonoBehaviour
     private float lastTimePlayerWasHurt;
     private SpriteRenderer healthBarSprite;
 
-    private float playerArmor;
     private void Start()
     {
         playerHealth = maxPlayerHealth;
@@ -179,7 +178,7 @@ public class Player : MonoBehaviour
     {
         float currentXScale = armorBar.transform.localScale.x;
         float newBarXScale = playerArmor / maxPlayerArmor;
-        armorBar.transform.localScale = new Vector2(newBarXScale, 1f);
+        armorBar.transform.localScale = new Vector2(newBarXScale, 0.5f);
     }
 
     private void ChangeHealthBar()
