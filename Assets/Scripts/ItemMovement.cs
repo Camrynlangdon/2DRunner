@@ -68,7 +68,7 @@ public class ItemMovement : MonoBehaviour
         isPlayerTouching = false;
     }
 
-    private IEnumerator LerpPosition(Vector2 startPosition, Vector2 targetPosition, float duration)
+    public IEnumerator LerpPosition(Vector2 startPosition, Vector2 targetPosition, float duration)
     {
         float time = 0;
         timesMoved++;

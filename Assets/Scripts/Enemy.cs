@@ -19,7 +19,6 @@ public class Enemy : MonoBehaviour
     {
         if (collision.gameObject.tag == player.tag)
         {
-            Debug.Log("player has colided with enemy!");
             isPlayerTouching = true;
             StartCoroutine(waitForAttack());
         }

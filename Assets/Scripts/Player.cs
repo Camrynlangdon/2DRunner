@@ -33,7 +33,7 @@ public class Player : MonoBehaviour
     public float playerArmor;
     public GameController gameController;
     public Animator animator;
-    public Coord playPosition;
+    public Coord playerPosition;
     public CameraController cameraController;
     public bool hasLanded = false;
     public GameObject healthBar;
@@ -81,7 +81,7 @@ public class Player : MonoBehaviour
         Vector2 currentplayerPosition = gameObject.transform.position;
         float x = currentplayerPosition.x;
         float y = currentplayerPosition.y;
-        this.playPosition = new Coord(x, y);
+        this.playerPosition = new Coord(x, y);
         return new Coord(x, y);
     }
 
@@ -117,7 +117,6 @@ public class Player : MonoBehaviour
     }
     public IEnumerator lockPlayerContols(float seconds)
     {
-        Debug.Log("player contols are locked");
         playerControlLock = true;
         yield return new WaitForSeconds(seconds);
         playerControlLock = false;
