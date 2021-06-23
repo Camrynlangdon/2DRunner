@@ -12,6 +12,7 @@ public class GameEnding : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
+        
         StartCoroutine(DelayedRestart());
     }
 
