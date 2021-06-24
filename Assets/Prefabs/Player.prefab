@@ -30,7 +30,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6076808283707100405}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.421, y: 13.632, z: 0}
+  m_LocalPosition: {x: 32.737194, y: -4.0129995, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6076808284990464790}
@@ -110,6 +110,7 @@ MonoBehaviour:
   playerHealthRegenDelay: 3
   healthRegenCap: 100
   maxPlayerArmor: 100
+  staggerLength: 0
   playerHealth: 0
   playerArmor: 0
   gameController: {fileID: 0}
@@ -119,6 +120,7 @@ MonoBehaviour:
   healthBar: {fileID: 6076808284473727085}
   armorBar: {fileID: 6076808285196802847}
   rigidbody2D: {fileID: 6076808283707100400}
+  playerControlLock: 0
 --- !u!95 &6076808283707100415
 Animator:
   serializedVersion: 3

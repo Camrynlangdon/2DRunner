@@ -67,7 +67,7 @@ TagManager:
   - name: Player
     uniqueID: 872826505
     locked: 0
-  - name: New Layer 9
+  - name: HiddenArea
     uniqueID: 946720897
     locked: 0
   - name: UI

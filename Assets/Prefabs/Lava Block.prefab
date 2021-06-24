@@ -93,7 +93,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3352528841579322921}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 6200000, guid: e38d58f313c06004cab5342021acc33e, type: 2}
   m_IsTrigger: 0
@@ -125,7 +125,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.00036394596, y: 0.005639553}
+  m_Offset: {x: -0.0003632307, y: 0.0025305748}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -136,7 +136,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 5.050681, y: 5.040456}
+  m_Size: {x: 5.1496687, y: 5.1461554}
   m_EdgeRadius: 0
 --- !u!114 &8840162166960092367
 MonoBehaviour:
@@ -151,5 +151,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meleeDamage: -20
-  attackSpeedInSeconds: 0.5
+  attackSpeedInSeconds: 0.1
   player: {fileID: 0}
+  enemyIntelligence: {fileID: 0}
