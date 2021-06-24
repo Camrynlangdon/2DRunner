@@ -21,21 +21,25 @@ public class Player : MonoBehaviour
     float playerHealthRegenDelay;
 
     [SerializeField]
-    float healthRegenCap = 0;
+    float healthRegenCap;
 
     [SerializeField]
     public float maxPlayerArmor;
+
+    [SerializeField]
+    public float staggerLength;
 
     public float playerHealth;
     public float playerArmor;
     public GameController gameController;
     public Animator animator;
-    public Coord playPosition;
+    public Coord playerPosition;
     public CameraController cameraController;
     public bool hasLanded = false;
     public GameObject healthBar;
     public GameObject armorBar;
     public Rigidbody2D rigidbody2D;
+    public bool playerControlLock = false;
 
     private new Rigidbody2D rigidbody;
     private bool playerIsTouchingGround;
@@ -52,25 +56,26 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKey("a"))
-            movePlayerX(-1);
-        if (Input.GetKey("d"))
-            movePlayerX(1);
-
-        if (!Input.GetKey("a") && !Input.GetKey("d"))
+        if (!playerControlLock)
+        {
+            if (Input.GetKey("a"))
+                movePlayerX(-1);
+            if (Input.GetKey("d"))
+                movePlayerX(1);
+            if (Input.GetKeyDown(KeyCode.Space))
+                playerJump();
+        }
+        if (!Input.GetKey("a") && !Input.GetKey("d") || playerControlLock)
             animator.SetFloat("Speed", 0);
 
         if (Input.GetKeyDown(KeyCode.Space))
             playerJump();
 
         if (Input.GetKey("r"))
-            gameController.resetCurrentLevel(); 
+            gameController.resetCurrentLevel();
 
-            playerReset();
         cameraController.changeCameraPosition(getPlayerPosition(), hasLanded);
     }
-
-
     private void FixedUpdate()
     {
         StartCoroutine(regenHealth());
@@ -81,7 +86,7 @@ public class Player : MonoBehaviour
         Vector2 currentplayerPosition = gameObject.transform.position;
         float x = currentplayerPosition.x;
         float y = currentplayerPosition.y;
-        this.playPosition = new Coord(x, y);
+        this.playerPosition = new Coord(x, y);
         return new Coord(x, y);
     }
 
@@ -103,7 +108,7 @@ public class Player : MonoBehaviour
 
     private void playerJump()
     {
-        if (playerHasJumped <= 1)
+        if (playerHasJumped <= 2)
         {
             rigidbody2D.velocity = Vector2.up * jumpStrength * 2;
             animator.SetBool("IsJumping", true);
@@ -111,23 +116,32 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void staggerPlayer(float seconds)
+    {
+        StartCoroutine(lockPlayerContols(seconds));
+    }
+    public IEnumerator lockPlayerContols(float seconds)
+    {
+        playerControlLock = true;
+        yield return new WaitForSeconds(seconds);
+        playerControlLock = false;
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         playerIsTouchingGround = true;
         playerHasJumped = 0;
         animator.SetBool("IsJumping", false);
         hasLanded = true;
+
+        if (collision.gameObject.tag == "Enemy")
+        {
+            staggerPlayer(staggerLength); ;
+        }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
         playerIsTouchingGround = false;
-    }
-
-    private void playerReset()
-    {
-        if (gameObject.transform.position.y < 0)
-            gameController.resetCurrentLevel();
     }
 
     IEnumerator regenHealth()
@@ -217,5 +231,7 @@ public class Player : MonoBehaviour
             return;
         }
     }
+
+
 
 }
