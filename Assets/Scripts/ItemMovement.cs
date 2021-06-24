@@ -68,7 +68,7 @@ public class ItemMovement : MonoBehaviour
         isPlayerTouching = false;
     }
 
-    public IEnumerator LerpPosition(Vector2 startPosition, Vector2 targetPosition, float duration)
+    public IEnumerator LerpPosition(Vector2 startPosition, Vector2 targetPosition, float duration, bool localPos = true)
     {
         float time = 0;
         timesMoved++;
@@ -90,18 +90,23 @@ public class ItemMovement : MonoBehaviour
         while (time < duration)
         {
             float t = time / duration;
-
-
             if (!linearMovement)
             {
                 t = t * t * (1f + 10f * t);
             }
 
-            gameObjectToMove.transform.localPosition = Vector2.Lerp(startPosition, targetPosition, t);
+            if (localPos)
+                gameObjectToMove.transform.localPosition = Vector2.Lerp(startPosition, targetPosition, t);
+            else
+                gameObjectToMove.transform.position = Vector2.Lerp(startPosition, targetPosition, t);
+
             time += Time.deltaTime;
             yield return null;
         }
-        gameObjectToMove.transform.localPosition = targetPosition;
+        if (localPos)
+            gameObjectToMove.transform.localPosition = targetPosition;
+        else
+            gameObjectToMove.transform.position = targetPosition;
 
 
         isRunning = false;

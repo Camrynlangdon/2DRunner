@@ -68,7 +68,12 @@ public class Player : MonoBehaviour
         if (!Input.GetKey("a") && !Input.GetKey("d") || playerControlLock)
             animator.SetFloat("Speed", 0);
 
-        playerReset();
+        if (Input.GetKeyDown(KeyCode.Space))
+            playerJump();
+
+        if (Input.GetKey("r"))
+            gameController.resetCurrentLevel();
+
         cameraController.changeCameraPosition(getPlayerPosition(), hasLanded);
     }
     private void FixedUpdate()
@@ -103,7 +108,7 @@ public class Player : MonoBehaviour
 
     private void playerJump()
     {
-        if (playerHasJumped <= 1)
+        if (playerHasJumped <= 2)
         {
             rigidbody2D.velocity = Vector2.up * jumpStrength * 2;
             animator.SetBool("IsJumping", true);
@@ -137,12 +142,6 @@ public class Player : MonoBehaviour
     private void OnCollisionExit2D(Collision2D collision)
     {
         playerIsTouchingGround = false;
-    }
-
-    private void playerReset()
-    {
-        if (gameObject.transform.position.y < 0)
-            gameController.resetCurrentLevel();
     }
 
     IEnumerator regenHealth()

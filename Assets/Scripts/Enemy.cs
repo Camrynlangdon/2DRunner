@@ -11,15 +11,21 @@ public class Enemy : MonoBehaviour
     float attackSpeedInSeconds = 0;
 
     public Player player;
+    public EnemyIntelligence enemyIntelligence;
 
     private bool isPlayerTouching;
     private bool alreadyAttacked;
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == player.tag)
         {
             isPlayerTouching = true;
+
+            if (enemyIntelligence != null)
+                enemyIntelligence.enemyIsStaggerd = true;
+
             StartCoroutine(waitForAttack());
         }
     }
